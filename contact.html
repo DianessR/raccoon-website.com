@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Мир енотов - Обратная связь</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
         .hero-section {
             background: url('assets/images/raccoon-contact.jpg') no-repeat center center;
@@ -32,6 +33,18 @@
         .form-container {
             margin-top: -50px;
             margin-bottom: 50px;
+        }
+        #feedbackResult {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #0d6efd;
         }
     </style>
 </head>
@@ -76,7 +89,7 @@
             <div class="col-lg-8">
                 <div class="contact-form">
                     <h2 class="text-center mb-4">Форма обратной связи</h2>
-                    <form>
+                    <form id="contactForm">
                         <div class="mb-3">
                             <label for="name" class="form-label">Ваше имя</label>
                             <input type="text" class="form-control" id="name" required>
@@ -89,9 +102,9 @@
                             <label for="subject" class="form-label">Тема сообщения</label>
                             <select class="form-select" id="subject" required>
                                 <option value="" selected disabled>Выберите тему</option>
-                                <option value="question">Вопрос о енотах</option>
-                                <option value="suggestion">Предложение</option>
-                                <option value="other">Другое</option>
+                                <option value="Вопрос о енотах">Вопрос о енотах</option>
+                                <option value="Предложение">Предложение</option>
+                                <option value="Другое">Другое</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -102,6 +115,26 @@
                             <button type="submit" class="btn btn-primary btn-lg">Отправить</button>
                         </div>
                     </form>
+
+                    <!-- Блок для отображения результата -->
+                    <div id="feedbackResult">
+                        <h3 class="text-center mb-4">Спасибо за ваше сообщение!</h3>
+                        <div class="mb-3">
+                            <p><strong>Имя:</strong> <span id="resultName"></span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p><strong>Email:</strong> <span id="resultEmail"></span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p><strong>Тема:</strong> <span id="resultSubject"></span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p><strong>Сообщение:</strong> <span id="resultMessage"></span></p>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button id="backButton" class="btn btn-secondary btn-lg">Назад к форме</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,7 +146,8 @@
             <div class="col-md-4 text-center">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-envelope"></i> Email</h5>
+                        <i class="bi bi-envelope card-icon"></i>
+                        <h5 class="card-title">Email</h5>
                         <p class="card-text">raccoons@world.com</p>
                     </div>
                 </div>
@@ -121,7 +155,8 @@
             <div class="col-md-4 text-center">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-telephone"></i> Телефон</h5>
+                        <i class="bi bi-telephone card-icon"></i>
+                        <h5 class="card-title">Телефон</h5>
                         <p class="card-text">+7 (123) 456-78-90</p>
                     </div>
                 </div>
@@ -129,7 +164,8 @@
             <div class="col-md-4 text-center">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-geo-alt"></i> Адрес</h5>
+                        <i class="bi bi-geo-alt card-icon"></i>
+                        <h5 class="card-title">Адрес</h5>
                         <p class="card-text">Лесная улица, дом 1, город Енотск</p>
                     </div>
                 </div>
@@ -143,6 +179,44 @@
             <p>&copy; второй крутой сайт про енотов.</p>
         </div>
     </footer>
+
+    <!-- Подключение Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript для обработки формы -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Отменяем стандартное поведение формы
+
+            // Получаем значения из формы
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // Отображаем результат
+            document.getElementById('resultName').textContent = name;
+            document.getElementById('resultEmail').textContent = email;
+            document.getElementById('resultSubject').textContent = subject;
+            document.getElementById('resultMessage').textContent = message;
+
+            // Показываем блок с результатом и скрываем форму
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('feedbackResult').style.display = 'block';
+        });
+
+        // Обработчик для кнопки "Назад к форме"
+        document.getElementById('backButton').addEventListener('click', function() {
+            // Скрываем блок с результатом и показываем форму
+            document.getElementById('feedbackResult').style.display = 'none';
+            document.getElementById('contactForm').style.display = 'block';
+
+            // Очищаем форму
+            document.getElementById('contactForm').reset();
+        });
+    </script>
+</body>
+</html>
 
     <!-- Подключение Bootstrap JS и иконок -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
